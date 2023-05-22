@@ -2,8 +2,9 @@
     "name": "adapt-contrib-openTextInput",
     "version": "2.2.4",
     "framework": ">=5.7.0",
-    "homepage": "https://github.com/learningpool/adapt-contrib-openTextInput",
+    "homepage": "https://github.com/simondate/adapt-contrib-openTextInput",
     "authors": [
+        "Simon Date<simon@adaptfreelancer.com",
         "Thomas Eitler <thomas.eitler@learnchamp.com>",
         "Barbara Fellner <me@barbarafellner.at>",
         "Petra Nussdorfer <petra.nussdorfer@learnchamp.com>",
