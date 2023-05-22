@@ -1,0 +1,44 @@
+ {
+    "_id": "c-400",
+    "_parentId": "b-32",
+    "_type": "component",
+    "_component": "openTextInput",
+    "_classes": "",
+    "_layout": "full",
+    "title": "Title of the problem",
+    "displayTitle": "Open TextInput Component",
+    "body": "Description of the problem.",
+    "_supportedLayout": "",
+    "instruction": "",
+    "_isResetOnRevisit": true,
+    "_canShowModelAnswer": true,
+    "_canShowMarking": true,
+    "placeholder": "Enter your answer here",
+    "_allowedCharacters": 200,
+    "remainingCharactersText": "Characters left",
+    "_recordInteraction": true,
+    "modelAnswer": "Answer to compare to.",
+    "savedMessage": "Your text has been saved",
+    "_buttons": {
+        "_submit": {
+            "buttonText": "Submit",
+            "ariaLabel": "Select here to submit your answer."
+        },
+        "_showCorrectAnswer": {
+            "buttonText": "Correct Answer",
+            "ariaLabel": ""
+        },
+        "_hideCorrectAnswer": {
+            "buttonText": "My Answer",
+            "ariaLabel": ""
+        },
+        "_showFeedback": {
+            "buttonText": "Show feedback",
+            "ariaLabel": ""
+        },
+        "_reset": {
+            "buttonText": "Reset",
+            "ariaLabel": ""
+        }
+    }
+}
