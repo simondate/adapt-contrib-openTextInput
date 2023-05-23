@@ -9,8 +9,9 @@
 define([
   'core/js/adapt',
   'core/js/views/questionView',
-  'core/js/enums/buttonStateEnum'
-], function(Adapt, QuestionView, BUTTON_STATE) {
+  'core/js/enums/buttonStateEnum',
+  'libraries/ckeditor'
+], function(Adapt, QuestionView, BUTTON_STATE, ClassicEditor) {
 
   const HIDE_MODEL_ANSWER_CLASS = 'opentextinput__hide-modelanswer'
   const SHOW_MODEL_ANSWER_CLASS = 'opentextinput__show-modelanswer'
@@ -174,6 +175,13 @@ define([
 
     postRender() {
       QuestionView.prototype.postRender.call(this);
+
+
+      ClassicEditor
+      .create( document.querySelector( '#textbox__' + this.model.get('_id') ) )
+      .catch( error => {
+          console.error( error );
+      } );
 
       if (this.$modelAnswer.height() <= 0) {
         this.$textbox.css('height', 'auto');
