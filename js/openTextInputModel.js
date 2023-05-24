@@ -85,7 +85,7 @@ define([
     }
 
     canSubmit() {
-      return this.get('charactersLeft') >= 0;
+      return this.get('_userAnswer');
     }
 
     isCorrect() {

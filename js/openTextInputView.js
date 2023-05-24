@@ -19,6 +19,17 @@ define([
   class OpenTextInputView extends QuestionView {
 
     events() {
+      return {
+        'keyup .ck-editor__editable': 'onKeyUpTextarea'
+      }
+    }
+
+    onKeyUpTextarea() {
+      const countandLimitCharacters = _.throttle(() => {
+        this.model.setUserAnswer(this.editor.getData());
+      }, 300);
+      countandLimitCharacters();
+      this.model.checkCanSubmit();
     }
 
     setupQuestion() {
@@ -65,14 +76,9 @@ define([
     onQuestionRendered() {
       this.listenTo(this.buttonsView, 'buttons:stateUpdate', this.onActionClicked);
 
-      this.$textbox = this.$('textarea.opentextinput__item-textbox');
+      this.$textbox = this.$('ck-editor__editable');
       this.$modelAnswer = this.$('.opentextinput__item-modelanswer');
-      this.$countChars = this.$('.opentextinput__count-characters-container');
 
-      // Count Chars should only be accessible to SR when entering text, no need for it to be tabbable
-      Adapt.a11y.toggleAccessibleEnabled(this.$countChars, false);
-
-      this.countCharacters();
       this.setReadyStatus();
 
       if (this.model.get('_isComplete') && !this.model.get('_canShowModelAnswer')) {
@@ -82,7 +88,7 @@ define([
       }
 
       if (!this.model.get('_isInteractionComplete')) return;
-      this.$textbox.prop('disabled', true);
+      // this.$textbox.prop('disabled', true);
     }
 
     loadLocalAnswer() {
@@ -105,35 +111,6 @@ define([
       }
     }
 
-    showCountAmount() {
-      this.$('.opentextinput__count-amount')
-       .html(`${this.model.get('charactersLeft')} ${this.model.get('remainingCharactersText')}`);
-    }
-
-    countCharacters() {
-      // const charLengthOfTextarea = this.$textbox.val().length;
-      const allowedCharacters = this.model.get('_allowedCharacters');
-      // let charactersLeft = charLengthOfTextarea;
-
-      // if (allowedCharacters !== null) {
-      //   charactersLeft = allowedCharacters - charLengthOfTextarea;
-      // }
-
-      // this.model.set('charactersLeft', charactersLeft);
-      // this.showCountAmount();
-    }
-
-    // onKeyUpTextarea() {
-    //   const countandLimitCharacters = _.throttle(() => {
-    //     this.limitCharacters();
-    //     this.countCharacters();
-    //     this.model.setUserAnswer(this.$textbox.val());
-    //   }, 300);
-
-    //   countandLimitCharacters();
-    //   this.model.checkCanSubmit();
-    // }
-
     limitCharacters() {
       const allowedCharacters = this.model.get('_allowedCharacters');
       if (allowedCharacters !== null && this.$textbox.val().length > allowedCharacters) {
@@ -143,7 +120,7 @@ define([
     }
 
     onSubmitted() {
-      const userAnswer = this.$textbox.val();
+      const userAnswer = this.editor.getData();
       this.model.setUserAnswer(userAnswer);
       this.storeUserAnswer();
     }
@@ -156,7 +133,7 @@ define([
         // Adding a try-catch here as certain browsers, e.g. Safari on iOS in Private mode,
         // report as being able to support localStorage but fail when setItem() is called.
         try {
-          localStorage.setItem(identifier, this.$textbox.val());
+          localStorage.setItem(identifier, this.editor.getData());
         } catch (e) {
           console.log('ERROR: HTML5 localStorage.setItem() failed! Unable to save user answer.');
         }
@@ -166,7 +143,7 @@ define([
     }
 
     onActionClicked(buttonState) {
-      if (!this.model.get('_isComplete')) return;
+      // if (!this.model.get('_isComplete')) return;
       this.onCompleteChanged(true, buttonState);
     }
 
@@ -174,9 +151,9 @@ define([
       QuestionView.prototype.postRender.call(this);
 
 
-      ClassicEditor
-      .create ( document.querySelector( '#textbox__' + this.model.get('_id') ) )
+      ClassicEditor.create ( document.querySelector( '#textbox__' + this.model.get('_id') ) )
       .then( editor => {
+        this.editor = editor;
         const wordCountPlugin = editor.plugins.get( 'WordCount' );
         const wordCountWrapper = document.getElementById( 'word-count__' + this.model.get('_id'));
 
