@@ -19,9 +19,6 @@ define([
   class OpenTextInputView extends QuestionView {
 
     events() {
-      return {
-        'keyup .opentextinput__item-textbox': 'onKeyUpTextarea'
-      }
     }
 
     setupQuestion() {
@@ -31,7 +28,7 @@ define([
     }
 
     onCompleteChanged(isComplete, buttonState) {
-      this.$textbox.prop('disabled', isComplete);
+ 
 
       // on complete change can be called when submitting a correct answer
       // we need to check if the textbox already has a value before
@@ -47,7 +44,7 @@ define([
       // Keep the action button enabled so we can show the model answer.
       Adapt.a11y.toggleAccessibleEnabled(this.$('.btn__action'), true);
       // Ensure count is not read out again
-      Adapt.a11y.toggleAccessible(this.$('.opentextinput__count-amount'), false);
+      // Adapt.a11y.toggleAccessible(this.$('.opentextinput__count-amount'), false);
 
       if (_.isEmpty(buttonState)) return;
 
@@ -114,28 +111,28 @@ define([
     }
 
     countCharacters() {
-      const charLengthOfTextarea = this.$textbox.val().length;
+      // const charLengthOfTextarea = this.$textbox.val().length;
       const allowedCharacters = this.model.get('_allowedCharacters');
-      let charactersLeft = charLengthOfTextarea;
+      // let charactersLeft = charLengthOfTextarea;
 
-      if (allowedCharacters !== null) {
-        charactersLeft = allowedCharacters - charLengthOfTextarea;
-      }
+      // if (allowedCharacters !== null) {
+      //   charactersLeft = allowedCharacters - charLengthOfTextarea;
+      // }
 
-      this.model.set('charactersLeft', charactersLeft);
-      this.showCountAmount();
+      // this.model.set('charactersLeft', charactersLeft);
+      // this.showCountAmount();
     }
 
-    onKeyUpTextarea() {
-      const countandLimitCharacters = _.throttle(() => {
-        this.limitCharacters();
-        this.countCharacters();
-        this.model.setUserAnswer(this.$textbox.val());
-      }, 300);
+    // onKeyUpTextarea() {
+    //   const countandLimitCharacters = _.throttle(() => {
+    //     this.limitCharacters();
+    //     this.countCharacters();
+    //     this.model.setUserAnswer(this.$textbox.val());
+    //   }, 300);
 
-      countandLimitCharacters();
-      this.model.checkCanSubmit();
-    }
+    //   countandLimitCharacters();
+    //   this.model.checkCanSubmit();
+    // }
 
     limitCharacters() {
       const allowedCharacters = this.model.get('_allowedCharacters');
@@ -178,8 +175,14 @@ define([
 
 
       ClassicEditor
-      .create( document.querySelector( '#textbox__' + this.model.get('_id') ) )
-      .catch( error => {
+      .create ( document.querySelector( '#textbox__' + this.model.get('_id') ) )
+      .then( editor => {
+        const wordCountPlugin = editor.plugins.get( 'WordCount' );
+        const wordCountWrapper = document.getElementById( 'word-count__' + this.model.get('_id'));
+
+        wordCountWrapper.appendChild( wordCountPlugin.wordCountContainer );
+      })
+      .catch ( error => {
           console.error( error );
       } );
 
