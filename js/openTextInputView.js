@@ -40,6 +40,9 @@ define([
 
     onCompleteChanged(isComplete, buttonState) {
  
+      // disable the ck5 editor on complete
+      this.editor.enableReadOnlyMode( 'my-feature-id' );
+
 
       // on complete change can be called when submitting a correct answer
       // we need to check if the textbox already has a value before
