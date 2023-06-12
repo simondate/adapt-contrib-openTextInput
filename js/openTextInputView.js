@@ -167,14 +167,8 @@ define([
           console.error( error );
       } );
 
-      if (this.$modelAnswer.height() <= 0) {
-        this.$textbox.css('height', 'auto');
-        this.$countChars.css('height', 'auto');
-      } else {
-        // Set the height of the textarea to the height of the model answer.
-        // This creates a smoother user experience
-        this.$textbox.height(this.$modelAnswer.height());
-      }
+      this.$textbox.css('height', 'auto');
+      this.$countChars.css('height', 'auto');
 
       this.$modelAnswer.addClass(HIDE_MODEL_ANSWER_CLASS);
     }
