@@ -79,7 +79,8 @@ define([
     onQuestionRendered() {
       this.listenTo(this.buttonsView, 'buttons:stateUpdate', this.onActionClicked);
 
-      this.$textbox = this.$('ck-editor__editable');
+      this.$textbox = this.$('.opentextinput__answer-container');
+      this.$countChars = this.$('.opentextinput__count-characters')
       this.$modelAnswer = this.$('.opentextinput__item-modelanswer');
 
       this.setReadyStatus();
@@ -192,8 +193,8 @@ define([
     hideCorrectAnswer() {
       this.model.set('_buttonState', BUTTON_STATE.SHOW_CORRECT_ANSWER);
 
-      this.$('textarea.opentextinput__item-textbox').show();
-      this.$('.opentextinput__count-characters-container').show();
+      this.$textbox.show();
+      this.$countChars.show();
       this.$('.opentextinput__item-modelanswer')
         .addClass(HIDE_MODEL_ANSWER_CLASS)
         .removeClass(SHOW_MODEL_ANSWER_CLASS);

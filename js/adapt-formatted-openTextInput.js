@@ -14,7 +14,7 @@ define([
 
   Adapt.once('adapt:start', restoreQuestionStatusPolyfill);
 
-  return Adapt.register('openTextInput', {
+  return Adapt.register('formattedOpenTextInput', {
     view: OpenTextInputView,
     model: OpenTextInputModel
   });
@@ -26,7 +26,7 @@ define([
    */
   function restoreQuestionStatusPolyfill() {
     Adapt.components.each(function(component) {
-      if (component.get('_component') !== 'openTextInput') return;
+      if (component.get('_component') !== 'formattedOpenTextInput') return;
 
       if (!component.get('_isComplete')) return;
 
