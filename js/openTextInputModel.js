@@ -85,7 +85,7 @@ define([
     }
 
     canSubmit() {
-      return this.get('_userAnswer');
+      return !this.get('_exceededLimit') && this.get('_userAnswer');
     }
 
     isCorrect() {

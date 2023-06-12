@@ -30,6 +30,11 @@ define([
       }, 300);
       countandLimitCharacters();
       this.model.checkCanSubmit();
+      if(!this.model.get('_canSubmit')) {
+        $('.opentextinput__limit-prompt').show();
+      } else {
+        $('.opentextinput__limit-prompt').hide();
+      }
     }
 
     setupQuestion() {
@@ -153,9 +158,48 @@ define([
 
     postRender() {
       QuestionView.prototype.postRender.call(this);
+      const $container = this.$( '.opentextinput__widget');
+      const $progressCircle =  this.$( '.demo-update__chart__circle' );
+      const $charactersBox =  this.$( '.demo-update__chart__characters' );
+      const $wordsBox = this.$( '.demo-update__words' );
+      const $circleCircumference = Math.floor( 2 * Math.PI * $($progressCircle).attr( 'r' ) );
+      const sendButton =  this.$( '.demo-update__send' );
 
+      const maxCharacters = this.model.get('_allowedCharacters');
 
-      ClassicEditor.create ( document.querySelector( '#textbox__' + this.model.get('_id') ) )
+      ClassicEditor.create ( document.querySelector( '#textbox__' + this.model.get('_id') ),{
+        wordCount: {
+          onUpdate: stats => {
+              const charactersProgress = stats.characters / maxCharacters * $circleCircumference;
+              const isLimitExceeded = stats.characters > maxCharacters;
+              const isCloseToLimit = !isLimitExceeded && stats.characters > maxCharacters * .8;
+              const circleDashArray = Math.min( charactersProgress, $circleCircumference );
+
+              // Set the stroke of the circle to show how many characters were typed.
+              $($progressCircle).attr( 'stroke-dasharray', `${ circleDashArray },${ $circleCircumference }` );
+
+              // Display the number of characters in the progress chart. When the limit is exceeded,
+              // display how many characters should be removed.
+              if ( isLimitExceeded ) {
+                  $charactersBox.textContent = `-${ stats.characters - maxCharacters }`;
+              } else {
+                  $charactersBox.textContent = stats.characters;
+              }
+
+              $wordsBox.textContent = `Words in the post: ${ stats.words }`;
+
+              // If the content length is close to the character limit, add a CSS class to warn the user.
+              $($container).toggleClass( 'demo-update__limit-close', isCloseToLimit );
+
+              // If the character limit is exceeded, add a CSS class that makes the content's background red.
+              $container.toggleClass( 'demo-update__limit-exceeded', isLimitExceeded );
+
+              // If the character limit is exceeded, disable the send button.
+              this.model.set( '_exceededLimit', isLimitExceeded );
+            }
+          }
+        } 
+      )
       .then( editor => {
         this.editor = editor;
         const wordCountPlugin = editor.plugins.get( 'WordCount' );

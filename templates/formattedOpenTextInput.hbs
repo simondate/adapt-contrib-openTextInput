@@ -3,14 +3,21 @@
   {{> component this}}
   <div class="component__widget opentextinput__widget">
     <div class="opentextinput__count-characters">
-      <div class="opentextinput__count-characters-container"><span
-          id="word-count__{{_id}}" class="opentextinput__count-amount"></span></div>
+      <div class="opentextinput__count-characters-container">
+        <span id="word-count__{{_id}}" class="opentextinput__count-amount"></span>
+        <svg class="demo-update__chart" viewbox="0 0 40 40" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+          <circle stroke="hsl(0, 0%, 93%)" stroke-width="3" fill="none" cx="20" cy="20" r="17" />
+          <circle class="demo-update__chart__circle" stroke="hsl(202, 92%, 59%)" stroke-width="3" stroke-dasharray="134,534" stroke-linecap="round" fill="none" cx="20" cy="20" r="17" />
+          <text class="demo-update__chart__characters" x="50%" y="50%" dominant-baseline="central" text-anchor="middle"></text>
+        </svg>
+      </div>
     </div>
 
     <div class="opentextinput__answer-container">
       <div class="opentextinput__item-textbox" id="textbox__{{_id}}"></div>
     </div>
     <div class="opentextinput__item-modelanswer opentextinput__item-textbox">{{{modelAnswer}}}</div>
+    <div class="opentextinput__limit-prompt">{{{maximumCharactersReachedText}}}</div>
     <div class="btn__container">
     </div>
   </div>
